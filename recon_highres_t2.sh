@@ -10,7 +10,7 @@ EXPERTOPT=$SUBJECTS_DIR/expert.opt
 FLAIR=`ls $IMPATH/3DFLAIR*nii`
 T1=`ls $IMPATH/3DT1*nii`
 SUBJECT=${s}_05mm_flair
-CMD=$SUBJECTS_DIR/logs/cmd.${s}
+CMD=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/cmd.${s}
 recon=$SUBJECTS_DIR/logs/recon.${s}
 echo "recon-all -all -s $SUBJECT -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -hippocampal-subfields-T1 -openmp 32 -hemi lh" > $recon
 chmod +x $recon
