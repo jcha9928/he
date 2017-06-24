@@ -15,9 +15,9 @@ CMD=$SUBJECTS_DIR/logs/cmd.${s}
 cat<<-EOM >$CMD
 #!/bin/bash
 #$ -cwd -S /bin/bash -N mpiprog
-#$ -l mem=1G,time=6::
+#$ -l mem=3G,time=24::
 #$ -pe orte 32
 #$ -l infiniband=TRUE
 . /nfs/apps/openmpi/current/setenv.sh
-mpirun recon-all -all -s $SUBJECT -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -openmp 32
+mpirun recon-all -all -s $SUBJECT -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -hippocampal-subfields-T1 -openmp 32 -hemi lh
 EOM
