@@ -11,7 +11,7 @@ FLAIR=`ls $IMPATH/flair*nii`
 T1=`ls $IMPATH/t1*nii`
 SUBJECT=${s}_05mm_flair
 CMD=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/cmd.${s}
-recon=$SUBJECTS_DIR/logs/recon.${s}
+recon=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/recon.${s}
 echo "recon-all -all -s $SUBJECT -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -hippocampal-subfields-T1 -openmp 32 -hemi lh" > $recon
 chmod +x $recon
 
