@@ -18,6 +18,7 @@ cat<<-EOM >$CMD
 #$ -l mem=3G,time=24::
 #$ -pe orte 32
 #$ -l infiniband=TRUE
+source ~/.bashrc
 . /nfs/apps/openmpi/current/setenv.sh
 mpirun recon-all -all -s $SUBJECT -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -hippocampal-subfields-T1 -openmp 32 -hemi lh
 EOM
