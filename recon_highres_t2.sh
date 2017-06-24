@@ -10,7 +10,7 @@ EXPERTOPT=$SUBJECTS_DIR/expert.opt
 FLAIR=`ls $IMPATH/*FLAIR*nii`
 T1=`ls $IMAPTH/*T1*nii`
 SUBJECT=${s}.05mm.flair
-CMD=$SUBJECTS/logs/cmd.${s}
+CMD=$SUBJECTS_DIR/logs/cmd.${s}
 
 cat<<-EOM >$CMD
 #!/bin/bash
