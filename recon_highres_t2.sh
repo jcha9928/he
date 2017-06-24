@@ -7,8 +7,8 @@ SUBJECTS_DIR=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs
 
 IMPATH=/ifs/scratch/pimri/posnerlab/1anal/IDP/${year}/${s}
 EXPERTOPT=$SUBJECTS_DIR/expert.opt
-FLAIR=`ls $IMPATH/3DFLAIR*nii`
-T1=`ls $IMPATH/3DT1*nii`
+FLAIR=`ls $IMPATH/flair*nii`
+T1=`ls $IMPATH/t1*nii`
 SUBJECT=${s}_05mm_flair
 CMD=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/cmd.${s}
 recon=$SUBJECTS_DIR/logs/recon.${s}
