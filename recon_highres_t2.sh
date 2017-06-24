@@ -1,8 +1,23 @@
 #!/bin/bash
 
-$EXPERTOPT=$SUBJECTS_DIR/expert.opt
-$FLAIR=
-$T1=
-$SUBJECT=${s}.05mm.flair
+year=2011
+s=10004953_20111116
 
-recon-all -all -s $SUBJECT -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial 
+SUBJECTS_DIR=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs
+
+$IMPATH=/ifs/scratch/pimri/posnerlab/1anal/IDP/${year}/${s}
+$EXPERTOPT=$SUBJECTS_DIR/expert.opt
+$FLAIR=`ls $IMPATH/*FLAIR*nii`
+$T1=`ls $IMAPTH/*T1*nii`
+$SUBJECT=${s}.05mm.flair
+$CMD=$SUBJECTS/logs/cmd.${s}
+
+cat<<-EOM >$CMD
+#!/bin/bash
+#$ -cwd -S /bin/bash -N mpiprog
+#$ -l mem=1G,time=6::
+#$ -pe orte 32
+#$ -l infiniband=TRUE
+. /nfs/apps/openmpi/current/setenv.sh
+mpirun recon-all -all -s $SUBJECT -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -openmp 32
+EOM
