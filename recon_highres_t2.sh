@@ -5,12 +5,12 @@ s=10004953_20111116
 
 SUBJECTS_DIR=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs
 
-$IMPATH=/ifs/scratch/pimri/posnerlab/1anal/IDP/${year}/${s}
-$EXPERTOPT=$SUBJECTS_DIR/expert.opt
-$FLAIR=`ls $IMPATH/*FLAIR*nii`
-$T1=`ls $IMAPTH/*T1*nii`
-$SUBJECT=${s}.05mm.flair
-$CMD=$SUBJECTS/logs/cmd.${s}
+IMPATH=/ifs/scratch/pimri/posnerlab/1anal/IDP/${year}/${s}
+EXPERTOPT=$SUBJECTS_DIR/expert.opt
+FLAIR=`ls $IMPATH/*FLAIR*nii`
+T1=`ls $IMAPTH/*T1*nii`
+SUBJECT=${s}.05mm.flair
+CMD=$SUBJECTS/logs/cmd.${s}
 
 cat<<-EOM >$CMD
 #!/bin/bash
