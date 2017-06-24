@@ -18,11 +18,13 @@ chmod +x $recon
 
 cat<<-EOM >$CMD
 #!/bin/bash
+#$ -V
 #$ -cwd -S /bin/bash -N mpiprog
 #$ -l mem=3G,time=24::
 #$ -pe orte 32
 #$ -l infiniband=TRUE
-source ~/.bashrc
+source /ifs/home/msph/epi/jep2111/.bashrc
+source /ifs/scratch/pimri/posnerlab/freesurfer_dev/freesurfer/SetUpFreeSurfer.sh
 . /nfs/apps/openmpi/current/setenv.sh
 mpirun $recon
 EOM
