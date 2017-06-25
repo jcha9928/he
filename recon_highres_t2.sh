@@ -33,7 +33,6 @@ cat<<-EOM >$CMD
 #$ -pe orte 16
 #$ -l infiniband=TRUE
 source /ifs/home/msph/epi/jep2111/.bashrc
-source /ifs/scratch/pimri/posnerlab/freesurfer_dev/freesurfer/SetUpFreeSurfer.sh
 . /nfs/apps/openmpi/current/setenv.sh
 mpirun $recon
 EOM
