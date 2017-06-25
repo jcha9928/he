@@ -36,3 +36,5 @@ source /ifs/home/msph/epi/jep2111/.bashrc
 . /nfs/apps/openmpi/current/setenv.sh
 mpirun $recon
 EOM
+
+qsub $CMD
