@@ -38,4 +38,4 @@ source /ifs/home/msph/epi/jep2111/.bashrc
 mpirun $recon
 EOM
 
-qsub -t $CMD
+qsub -t 2 $CMD
