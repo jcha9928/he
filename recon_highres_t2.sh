@@ -19,8 +19,8 @@ FREESURFER_HOME=/ifs/home/msph/epi/jep2111/app/freesurfer/
 source $FREESURFER_HOME/SetUpFreeSurfer.sh
 SUBJECTS_DIR=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs
 echo NOW PERFORMING RECON-ALL
-recon-all -all -s $SUBJECT -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -hippocampal-subfields-T1 -openmp 16 
-recon-all -all -s $SUBJECT -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -hippocampal-subfields-T1T2 $FLAIR -openmp 16
+recon-all -all -s ${SUBJECT}.test1 -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -hippocampal-subfields-T1 -openmp 16 
+recon-all -all -s ${SUBJECT}.test2 -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -hippocampal-subfields-T1T2 $FLAIR -openmp 16
 EOC
 
 chmod +x $recon
