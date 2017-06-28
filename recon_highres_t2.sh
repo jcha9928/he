@@ -30,7 +30,7 @@ cat<<-EOM >$CMD
 #!/bin/bash
 #$ -V
 #$ -cwd -S /bin/bash -N reconhigh
-#$ -l mem=0.2G,time=168::
+#$ -l mem=1G,time=168::
 #$ -pe orte 128
 #$ -l infiniband=TRUE
 source /ifs/home/msph/epi/jep2111/.bashrc
