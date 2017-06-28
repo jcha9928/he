@@ -20,7 +20,7 @@ source $FREESURFER_HOME/SetUpFreeSurfer.sh
 SUBJECTS_DIR=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs
 echo NOW PERFORMING RECON-ALL
 #recon-all -all -s ${SUBJECT}.test_mpi128 -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -hippocampal-subfields-T1 -openmp 64 
-recon-all -all -s ${SUBJECT}_test_mpi32 -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -hippocampal-subfields-T1T2 $FLAIR flair -openmp 32
+recon-all -all -s ${SUBJECT}_test_mpi32 -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -hippocampal-subfields-T1T2 $FLAIR flair -openmp 24
 EOC
 
 chmod +x $recon
@@ -30,8 +30,8 @@ cat<<-EOM >$CMD
 #!/bin/bash
 #$ -V
 #$ -cwd -S /bin/bash -N reconhigh
-#$ -l mem=1G,time=168::
-#$ -pe orte 32
+#$ -l mem=3G,time=168::
+#$ -pe orte 24
 #$ -l infiniband=TRUE
 source /ifs/home/msph/epi/jep2111/.bashrc
 . /nfs/apps/openmpi/current/setenv.sh
