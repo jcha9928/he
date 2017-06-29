@@ -1,4 +1,4 @@
-function mr_hr_1_preproc(order)
+function mr_1_preproc(order)
 
 %------------ FreeSurfer -----------------------------%
 fshome = getenv('FREESURFER_HOME');
@@ -6,7 +6,8 @@ fsmatlab = sprintf('%s/matlab',fshome);
 if (exist(fsmatlab) == 7)
     path(path,fsmatlab);
 end
-    
+
+
 
 %% reset LD_LIBRARY_PATH
 LD_LIBRARY_PATH=['/nfs/apps/gcc/4.9.2/lib64'];
