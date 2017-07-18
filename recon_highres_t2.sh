@@ -32,6 +32,7 @@ cat<<-EOM >$CMD
 #$ -cwd -S /bin/bash -N recon
 #$ -l mem=3G,time=48::
 #$ -pe orte 12
+#$ -o /ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job -e /ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job 
 #$ -l infiniband=TRUE
 source /ifs/home/msph/epi/jep2111/.bashrc
 . /nfs/apps/openmpi/current/setenv.sh
