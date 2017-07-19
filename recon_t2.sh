@@ -45,7 +45,7 @@ source /ifs/home/msph/epi/jep2111/.bashrc
 mpirun $recon1
 EOM
 
-prejobid=`qsub $CMD1`
+#prejobid=`qsub $CMD1`
 echo $CMD1
 
 ### 2 HIPPOCAMPAL SEGMENTATION
@@ -73,4 +73,5 @@ source /ifs/home/msph/epi/jep2111/.bashrc
 $recon2
 EOM
 
-qsub -hold_jid $prejobid $CMD2
+#qsub -hold_jid $prejobid $CMD2
+echo $CMD2
