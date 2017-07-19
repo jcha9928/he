@@ -26,7 +26,7 @@ source $FREESURFER_HOME/SetUpFreeSurfer.sh
 SUBJECTS_DIR=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs
 echo NOW PERFORMING RECON-ALL
 #recon-all -all -s ${SUBJECT}.test_mpi128 -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -hippocampal-subfields-T1 -openmp 64 
-recon-all -all -s ${SUBJECT}_test_mpi${mpi} -i $T1 -FLAIR $FLAIR -FLAIRpial -openmp ${mpi}
+recon-all -all -s ${SUBJECT}_test2_mpi${mpi} -i $T1 -FLAIR $FLAIR -FLAIRpial -openmp ${mpi}
 EOC
 
 chmod +x $recon1
@@ -44,7 +44,7 @@ source /ifs/home/msph/epi/jep2111/.bashrc
 mpirun $recon1
 EOM
 
-#id=`qsub $CMD1`
+prejobid=`qsub $CMD1`
 echo $CMD1
 
 ### 2 HIPPOCAMPAL SEGMENTATION
@@ -55,10 +55,10 @@ source $FREESURFER_HOME/SetUpFreeSurfer.sh
 SUBJECTS_DIR=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs
 echo NOW PERFORMING RECON-ALL
 #recon-all -all -s ${SUBJECT}.test_mpi128 -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -hippocampal-subfields-T1 -openmp 64 
-recon-all -s ${SUBJECT}_test_mpi4 -hippocampal-subfields-T1T2 $FLAIR flair -${threads} 4
+recon-all -s ${SUBJECT}_test2_mpi${mpi} -hippocampal-subfields-T1T2 $FLAIR flair -${threads} 4
 EOC
 
-#chmod +x $recon2
+chmod +x $recon2
 
 
 cat<<-EOM >$CMD2
@@ -71,5 +71,4 @@ source /ifs/home/msph/epi/jep2111/.bashrc
 $recon2
 EOM
 
-#qsub $CMD
-echo $CMD2
+qsub $CMD2 -hold_jid $prejobid
