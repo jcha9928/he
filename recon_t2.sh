@@ -73,5 +73,5 @@ source /ifs/home/msph/epi/jep2111/.bashrc
 $recon2
 EOM
 
-qsub -hold_jid \$prejobid $CMD2
+qsub -hold_jid $prejobid $CMD2
 #echo $CMD2
