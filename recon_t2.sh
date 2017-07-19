@@ -2,7 +2,7 @@
 
 year=2011
 s=10004953_20111116
-mpi=4
+mpi=$1
 threads=4
 
 SUBJECTS_DIR=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs
