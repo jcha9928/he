@@ -41,7 +41,7 @@ cat<<-EOM >$CMD1
 #$ -l infiniband=TRUE
 source /ifs/home/msph/epi/jep2111/.bashrc
 . /nfs/apps/openmpi/current/setenv.sh
-mpirun $recon
+mpirun $recon1
 EOM
 
 #id=`qsub $CMD1`
@@ -67,10 +67,8 @@ cat<<-EOM >$CMD2
 #$ -cwd -S /bin/bash -N recon2
 #$ -l mem=3G,time=24::
 #$ -pe smp ${threads}
-#$ -l infiniband=TRUE
 source /ifs/home/msph/epi/jep2111/.bashrc
-. /nfs/apps/openmpi/current/setenv.sh
-mpirun $recon
+$recon2
 EOM
 
 #qsub $CMD
