@@ -36,7 +36,7 @@ cat<<-EOM >$CMD1
 #!/bin/bash
 #$ -V
 #$ -cwd -S /bin/bash -N recon1
-#$ -l mem=3G,time=48::
+#$ -l mem=3G,time=72::
 #$ -pe orte ${mpi}
 #$ -l infiniband=TRUE
 source /ifs/home/msph/epi/jep2111/.bashrc
