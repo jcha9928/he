@@ -39,6 +39,7 @@ cat<<-EOM >$CMD1
 #$ -l mem=3G,time=72::
 #$ -pe orte ${mpi}
 #$ -l infiniband=TRUE
+#$ -o /ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job -e /ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job
 source /ifs/home/msph/epi/jep2111/.bashrc
 . /nfs/apps/openmpi/current/setenv.sh
 mpirun $recon1
@@ -67,6 +68,7 @@ cat<<-EOM >$CMD2
 #$ -cwd -S /bin/bash -N recon2
 #$ -l mem=3G,time=24::
 #$ -pe smp ${threads}
+#$ -o /ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job -e /ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job
 source /ifs/home/msph/epi/jep2111/.bashrc
 $recon2
 EOM
