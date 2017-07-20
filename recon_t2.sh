@@ -2,8 +2,7 @@
 
 year=2011
 s=10004953_20111116
-mpi=$1
-threads=4
+threads=8
 
 SUBJECTS_DIR=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs
 
@@ -11,14 +10,14 @@ IMPATH=/ifs/scratch/pimri/posnerlab/1anal/IDP/${year}/${s}
 EXPERTOPT=$SUBJECTS_DIR/expert.opt
 FLAIR=`ls $IMPATH/flair*nii`
 T1=`ls $IMPATH/t1*nii`
-SUBJECT=${s}_1mm_flair
+SUBJECT=${s}_1mm_flair_v6_test3
 CMD1=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/cmd1.${s}
 CMD2=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/cmd2.${s}
 
 recon1=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/recon1.${s}
 recon2=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/recon2.${s}
 
-### 1 INITIAL RECONA-LL
+### 1 INITIAL RECON-ALL
 cat<<EOC >$recon1
 #!/bin/bash
 FREESURFER_HOME=/ifs/home/msph/epi/jep2111/app/freesurfer/
@@ -26,7 +25,7 @@ source $FREESURFER_HOME/SetUpFreeSurfer.sh
 SUBJECTS_DIR=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs
 echo NOW PERFORMING RECON-ALL
 #recon-all -all -s ${SUBJECT}.test_mpi128 -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -hippocampal-subfields-T1 -openmp 64 
-recon-all -all -s ${SUBJECT}_test2_mpi${mpi} -i $T1 -FLAIR $FLAIR -FLAIRpial -openmp ${mpi}
+recon-all -all -s ${SUBJECT} -i $T1 -FLAIR $FLAIR -FLAIRpial -qcache
 EOC
 
 chmod +x $recon1
@@ -36,13 +35,10 @@ cat<<-EOM >$CMD1
 #!/bin/bash
 #$ -V
 #$ -cwd -S /bin/bash -N recon1
-#$ -l mem=3G,time=72::
-#$ -pe orte ${mpi}
-#$ -l infiniband=TRUE
+#$ -l mem=5G,time=72::
 #$ -o /ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job -e /ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job
 source /ifs/home/msph/epi/jep2111/.bashrc
-. /nfs/apps/openmpi/current/setenv.sh
-mpirun $recon1
+$recon1
 EOM
 
 prejobid=`qsub $CMD1 | awk '{print $3}'`
@@ -56,7 +52,7 @@ source $FREESURFER_HOME/SetUpFreeSurfer.sh
 SUBJECTS_DIR=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs
 echo NOW PERFORMING RECON-ALL
 #recon-all -all -s ${SUBJECT}.test_mpi128 -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -hippocampal-subfields-T1 -openmp 64 
-recon-all -s ${SUBJECT}_test2_mpi${mpi} -hippocampal-subfields-T1T2 $FLAIR flair -itkthreads ${threads} 
+recon-all -s ${SUBJECT} -hippocampal-subfields-T1T2 $FLAIR flair -itkthreads ${threads} 
 EOC
 
 chmod +x $recon2
