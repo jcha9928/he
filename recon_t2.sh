@@ -56,7 +56,7 @@ source $FREESURFER_HOME/SetUpFreeSurfer.sh
 SUBJECTS_DIR=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs
 echo NOW PERFORMING RECON-ALL
 #recon-all -all -s ${SUBJECT}.test_mpi128 -hires -i $T1 -expert $EXPERTOPT -FLAIR $FLAIR -FLAIRpial -hippocampal-subfields-T1 -openmp 64 
-recon-all -s ${SUBJECT}_test2_mpi${mpi} -hippocampal-subfields-T1T2 $FLAIR flair -${threads} 4
+recon-all -s ${SUBJECT}_test2_mpi${mpi} -hippocampal-subfields-T1T2 $FLAIR flair -itkthreads ${threads} 
 EOC
 
 chmod +x $recon2
