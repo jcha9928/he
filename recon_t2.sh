@@ -1,6 +1,8 @@
 #!/bin/bash
 
+list=$1
 year=2011
+
 s=10004953_20111116
 threads=8
 
