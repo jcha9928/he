@@ -9,7 +9,7 @@ CMD2=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/cmd2.${list}
 rm -rf $CMD1
 rm -rf $CMD2
 
-for s in `cat $hr/fs/$list`
+for s in `cat $IDP/data/$list`
 do
 
 SUBJECTS_DIR=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs
@@ -40,7 +40,7 @@ done
 #prejobid=`$code/fsl_sub_hpc_6 -t $CMD1`
 echo $CMD1
 
-for s in `cat $hr/fs/$list`
+for s in `cat $IDP/data/$list`
 do
 recon2=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/recon2.${s}
 rm -rf $recon2
