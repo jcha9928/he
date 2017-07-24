@@ -59,5 +59,5 @@ $recon2
 EOM
 done
 
-#$code/fsl_sub_hpc_3 -hold_jid $prejobid -t $CMD2
+#$code/fsl_sub_hpc_3 -j $prejobid -s smp,$nthreads -l /ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job -t $CMD2
 echo $CMD2
