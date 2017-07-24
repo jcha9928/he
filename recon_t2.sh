@@ -3,6 +3,7 @@
 list=$1
 #year=2011
 threads=6
+IDP=/ifs/scratch/pimri/posnerlab/1anal/IDP
 
 CMD1=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/cmd1.${list}
 CMD2=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/cmd2.${list}
