@@ -3,7 +3,7 @@
 list=$1
 #year=2011
 
-s=10004953_20111116
+s=10004362
 threads=8
 
 SUBJECTS_DIR=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs
