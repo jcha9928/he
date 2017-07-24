@@ -34,7 +34,7 @@ chmod +x $recon1
 
 
 cat<<-EOM >>$CMD1
-echo $recon1
+$recon1
 EOM
 done
 
@@ -55,7 +55,7 @@ chmod +x $recon2
 
 
 cat<<-EOM >>$CMD2
-echo $recon2
+$recon2
 EOM
 done
 
