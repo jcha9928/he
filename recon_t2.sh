@@ -19,7 +19,7 @@ IMPATH=/ifs/scratch/pimri/posnerlab/1anal/IDP/data/${s}
 EXPERTOPT=$SUBJECTS_DIR/expert.opt
 FLAIR=`ls $IMPATH/flair*nii*`
 T1=`ls $IMPATH/t1*nii*`
-SUBJECT=${s}_1mm_flair_test
+SUBJECT=${s}_1mm_flair
 
 recon1=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/recon1.${s}
 rm -rf $recon1
