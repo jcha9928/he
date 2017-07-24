@@ -1,4 +1,4 @@
-#! /usr/bin/env python                                                                                                                                                      
+#! /nfs/apps/python/2.7.11/bin/python                                                                                                                                                      
 # This trac_transpose_matrix.py transpose matrix                                                                                                                            
 # Written by Jiook Cha (cha.jiook@gmail.com)                                                                                                                                
 
