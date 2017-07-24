@@ -1,18 +1,18 @@
 #!/bin/bash
 
 list=$1
-year=2011
+#year=2011
 
 s=10004953_20111116
 threads=8
 
 SUBJECTS_DIR=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs
 
-IMPATH=/ifs/scratch/pimri/posnerlab/1anal/IDP/${year}/${s}
+IMPATH=/ifs/scratch/pimri/posnerlab/1anal/IDP/data/${s}
 EXPERTOPT=$SUBJECTS_DIR/expert.opt
 FLAIR=`ls $IMPATH/flair*nii*`
 T1=`ls $IMPATH/t1*nii*`
-SUBJECT=${s}_1mm_flair_v6_test3
+SUBJECT=${s}_1mm_flair_test
 CMD1=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/cmd1.${s}
 CMD2=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/cmd2.${s}
 
@@ -37,7 +37,7 @@ cat<<-EOM >$CMD1
 #!/bin/bash
 #$ -V
 #$ -cwd -S /bin/bash -N recon1
-#$ -l mem=5G,time=72::
+#$ -l mem=9G,time=72::
 #$ -o /ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job -e /ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job
 source /ifs/home/msph/epi/jep2111/.bashrc
 $recon1
