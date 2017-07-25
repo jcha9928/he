@@ -15,6 +15,7 @@ CMD=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/cmd1.trac.${s}
 rm $CMD
 
 cat<<EOC >$CMD
+#!/bin/bash
 workingdir=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs/${s}/dmri2
 if [ ! -e $workingdir ]; then mkdir $workingdir; fi
 cd $workingdir
@@ -24,9 +25,9 @@ rawdti=$IDP/data/$s/dti.nii.gz
 rawbvec=$IDP/data/$s/dti.bvec_tp
 rawbval=$IDP/data/$s/dti.bval_tp
 
-cp \$rawdti\ ./
-cp "$rawbvec" ./
-cp "$rawbval" ./
+cp \$rawdti ./
+cp \$rawbvec ./
+cp \$rawbval ./
 
 %% 2. DWI processing2-converting nifti to mif%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if [ ! -e mr_fod.mif.gz ];then
