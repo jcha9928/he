@@ -1,5 +1,5 @@
 #! /bin/bash
-## usage: mr_2_tckgen -t 6 -b 1
+## usage: trac_2_tckgen -t 6 -b 0
 
 
 while [ $1 != -- ] ; do
