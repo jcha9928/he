@@ -49,13 +49,15 @@ fi
 if [ ! -e mr_meanb0.nii.gz ];then mrconvert mr_meanb0.mif.gz mr_meanb0.nii.gz; fi
 
 ln -s brain_flip.nii.gz brain.nii.gz
+
+if [ ! -e str2diff_synantsWarp.nii.gz ]; then
 im1=brain.nii.gz
 im2=mr_meanb0.nii.gz
 ANTS 3 -m PR[\$im2,\$im1,1,2] -i 100x100x20 -o str2diff_synants.nii.gz -t SyN[0.3] -r Gauss[2,0]
 WarpImageMultiTransform 3 \$im1 brain_diff_synants.nii.gz -R mr_meanb0.nii.gz str2diff_synantsWarp.nii.gz str2diff*.txt
+fi
 
 #WarpImageMultiTransform 3 T1_diff.nii.gz T1_diff_warped_synants.nii.gz -R mr_meanb0.nii.gz str2diff_synantsWarp.nii.gz str2diff*.txt
-
 #WarpImageMultiTransform 3 T1_diff.nii.gz T1_diff_warped_synants.nii.gz -R mr_meanb0.nii.gz str2diff_synantsWarp.nii.gz str2diff*.txt --use-NN
 
 
