@@ -125,7 +125,8 @@ do
    source ~/.bashrc
    ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$nthreadsX2
    echo NOW WARPING FOR SUBJECT ${s}
-   cd /ifs/scratch/pimri/posnerlab/1anal/highrisk/fs/${s}/dmri2
+   SUBJECT=${s}_1mm_flair
+    cd /ifs/scratch/pimri/posnerlab/1anal/IDP/fs/\${SUBJECT}/dmri2
 #### tckgen
 rm -rf mr_track_100M.tck
 if [ -e mr_track_10M_SIFT.tck ]; then
