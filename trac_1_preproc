@@ -94,6 +94,7 @@ echo "I THINK EVERYTHING IS DONE BY NOW"
 EOC
 
 chmod +x $CMD
+done
 
 ### batch submission
 cat<<EOM >$CMD_batch
