@@ -25,9 +25,9 @@ rawdti=$IDP/data/$s/dti.nii.gz
 rawbvec=$IDP/data/$s/dti.bvec_tp
 rawbval=$IDP/data/$s/dti.bval_tp
 
-cp \$rawdti ./
-cp \$rawbvec ./
-cp \$rawbval ./
+cp "$rawdti" ./
+cp "$rawbvec" ./
+cp "$rawbval" ./
 
 %% 2. DWI processing2-converting nifti to mif%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if [ ! -e mr_fod.mif.gz ];then
