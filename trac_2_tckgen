@@ -37,7 +37,25 @@ echo "#!/bin/bash
 source ~/.bashrc
 FREESURFER_HOME=$work/freesurfer_dev/freesurfer
 source /ifs/scratch/pimri/posnerlab/freesurfer_dev/freesurfer/FreeSurferEnv.sh
+ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$nthreadsX2
 cd /ifs/scratch/pimri/posnerlab/1anal/IDP/fs/${s}/dmri2
+
+### ATNS warping
+if [ ! -e brain_flip.nii.gz ];then
+   mri_convert ../mri/brain.mgz /tmp/tmp.nii.gz && /ifs/scratch/pimri/posnerlab/freesurfer_dev/freesurfer/bin/flip4fsl /tmp/tmp.nii.gz brain_flip.nii.gz
+fi
+
+if [ ! -e mr_meanb0.nii.gz ];then mrconvert mr_meanb0.mif.gz mr_meanb0.nii.gz; fi
+
+ln -s brain_flip.nii.gz brain.nii.gz
+im1=brain.nii.gz
+im2=mr_meanb0.nii.gz
+ANTS 3 -m PR[\$im2,\$im1,1,2] -i 100x100x20 -o str2diff_synants.nii.gz -t SyN[0.3] -r Gauss[2,0]
+WarpImageMultiTransform 3 \$im1 brain_diff_synants.nii.gz -R mr_meanb0.nii.gz str2diff_synantsWarp.nii.gz str2diff*.txt
+
+#WarpImageMultiTransform 3 T1_diff.nii.gz T1_diff_warped_synants.nii.gz -R mr_meanb0.nii.gz str2diff_synantsWarp.nii.gz str2diff*.txt
+
+#WarpImageMultiTransform 3 T1_diff.nii.gz T1_diff_warped_synants.nii.gz -R mr_meanb0.nii.gz str2diff_synantsWarp.nii.gz str2diff*.txt --use-NN
 
 
 ### 5TTGEN
@@ -48,7 +66,9 @@ while [ ! -e tmp.nii.gz ]; do sleep 1; done
 while [ ! -e T1_flip.nii.gz ]; do sleep 1; done
 mrconvert mr_meanb0.mif.gz mr_meanb0.nii.gz -force
 while [ ! -e mr_meanb0.nii.gz ]; do sleep 1; done
-flirt -in T1_flip.nii.gz -out T1_diff.nii.gz -ref mr_meanb0.nii.gz -applyxfm -init ../dmri/xfms/anat2diff.flt.mat -v
+#flirt -in T1_flip.nii.gz -out T1_diff.nii.gz -ref mr_meanb0.nii.gz -applyxfm -init ../dmri/xfms/anat2diff.flt.mat -v
+WarpImageMultiTransform 3 T1_diff.nii.gz T1_diff_synants.nii.gz -R mr_meanb0.nii.gz str2diff_synantsWarp.nii.gz str2diff*.txt
+
 while [ ! -e T1_diff.nii.gz ]; do sleep 1; done
 5ttgen fsl T1_diff.nii.gz 5tt.mif.gz -force -nthreads $nthreadsX2
 mrconvert 5tt.mif.gz 5tt.nii.gz -force
@@ -67,36 +87,38 @@ echo ****FLIPING FOR FSL
 /ifs/scratch/pimri/posnerlab/freesurfer_dev/freesurfer/bin/flip4fsl \${im}.nii.gz \${im}_flip.nii.gz
 while [ ! -e \${im}_flip.nii.gz ]; do sleep 1; done
 echo ****NOW FLIRTING
-flirt -in \${im}_flip.nii.gz -out \${im}_flip_diff.nii.gz -ref mr_meanb0.nii.gz -applyxfm -init ../dmri/xfms/anat2diff.flt.mat -interp nearestneighbour -v 
+#flirt -in \${im}_flip.nii.gz -out \${im}_flip_diff.nii.gz -ref mr_meanb0.nii.gz -applyxfm -init ../dmri/xfms/anat2diff.flt.mat -interp nearestneighbour -v 
+WarpImageMultiTransform 3 \${im}_flip.nii.gz \${im}_diff_synants.nii.gz -R mr_meanb0.nii.gz str2diff_synantsWarp.nii.gz str2diff*.txt --use-NN
+
 while [ ! -e \${im}_flip_diff.nii.gz ]; do sleep 1; done
 done
 
 
 ### labelconvert for aparc+aseg and aparc.a2009+aseg
-labelconvert aparc+aseg_flip_diff.nii.gz $FREESURFER_HOME/FreeSurferColorLUT.txt /ifs/scratch/pimri/posnerlab/app/mrtrix3/src/connectome/tables/fs_default.txt nodes_aparc+aseg.mif.gz -force
+labelconvert aparc+aseg_diff_synants.nii.gz $FREESURFER_HOME/FreeSurferColorLUT.txt /ifs/scratch/pimri/posnerlab/app/mrtrix3/src/connectome/tables/fs_default.txt nodes_aparc+aseg.mif.gz -force
 while [ ! -e nodes_aparc+aseg.mif.gz ]; do sleep 1; done
-labelconvert aparc.a2009s+aseg_flip_diff.nii.gz $FREESURFER_HOME/FreeSurferColorLUT.txt /ifs/scratch/pimri/posnerlab/app/mrtrix3/src/connectome/tables/fs_a2009s.txt nodes_aparc.a2009s+aseg.mif.gz -force
+labelconvert aparc.a2009s+aseg_diff_synants.nii.gz $FREESURFER_HOME/FreeSurferColorLUT.txt /ifs/scratch/pimri/posnerlab/app/mrtrix3/src/connectome/tables/fs_a2009s.txt nodes_aparc.a2009s+aseg.mif.gz -force
 while [ ! -e nodes_aparc.a2009s+aseg.mif.gz ]; do sleep 1; done
 #labelsgmfix nodes.mif.gz T1_diff.nii.gz fs_default.txt nodes_fixSGM.mif.gz -sgm_amyg_hipp -premasked -verbose -nthreads 12
 ############
 " >$CMD1
 
 
-#batch 
+#batch submission
 echo $CMD1 >> $CMD1_batch
 done
 
-#prepid=`$code/fsl_sub_hpc -T 60 -M 6G -l $hr/fs/log_mr -s smp,$nthreadsX2 -t $CMD1_batch`
-prepid=`$code/fsl_sub_hpc_3 -s smp,$nthreads -l $hr/fs/log_mr -t ${CMD1_batch}`
+#prepid=`$code/fsl_sub_hpc_3 -s smp,$nthreads -l $logdir -t ${CMD1_batch}`
+echo ${CMD1_batch}
 
 for s in `cat $subjectlist`
 do
-   CMD2=$hr/fs/log_mr/cmd.tckgensift.${s}
+   CMD2=$logdir/cmd.tckgensift.${s}
    rm -rf $CMD2
 
    echo "#!/bin/bash
    source ~/.bashrc
-   export ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=`echo $nthreadsX2`
+   ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$nthreadsX2
    echo NOW WARPING FOR SUBJECT ${s}
    cd /ifs/scratch/pimri/posnerlab/1anal/highrisk/fs/${s}/dmri2
 #### tckgen
@@ -136,4 +158,4 @@ done
 #$code/fsl_sub_hpc_36 $monk/data/cmd/cmd2_${s}  
 #echo $jobid >> $monk/data/cmd/jobid
 
-$code/fsl_sub_hpc_6 -N connectome -s smp,$nthreads -j $prepid -l $hr/fs/log_mr -t ${CMD2_batch}
+echo $code/fsl_sub_hpc_6 -N connectome -s smp,$nthreads -j $prepid -l $hr/fs/log_mr -t ${CMD2_batch}
