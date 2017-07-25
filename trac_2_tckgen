@@ -63,19 +63,20 @@ fi
 
 ### 5TTGEN
 if [ ! -e 5tt.nii.gz ]; then
-mri_convert ../mri/T1.mgz tmp.nii.gz
-while [ ! -e tmp.nii.gz ]; do sleep 1; done
-/ifs/scratch/pimri/posnerlab/freesurfer_dev/freesurfer/bin/flip4fsl tmp.nii.gz T1_flip.nii.gz
+mri_convert ../mri/T1.mgz /tmp/tmp.nii.gz && /ifs/scratch/pimri/posnerlab/freesurfer_dev/freesurfer/bin/flip4fsl /tmp/tmp.nii.gz T1_flip.nii.gz
 while [ ! -e T1_flip.nii.gz ]; do sleep 1; done
+
 mrconvert mr_meanb0.mif.gz mr_meanb0.nii.gz -force
 while [ ! -e mr_meanb0.nii.gz ]; do sleep 1; done
+
 #flirt -in T1_flip.nii.gz -out T1_diff.nii.gz -ref mr_meanb0.nii.gz -applyxfm -init ../dmri/xfms/anat2diff.flt.mat -v
 WarpImageMultiTransform 3 T1_flip.nii.gz T1_diff_synants.nii.gz -R mr_meanb0.nii.gz str2diff_synantsWarp.nii.gz str2diff*.txt
+while [ ! -e T1_diff_synants.nii.gz ]; do sleep 1; done
 
-while [ ! -e T1_diff.nii.gz ]; do sleep 1; done
 5ttgen fsl T1_diff_synants.nii.gz 5tt.mif.gz -force -nthreads $nthreadsX2
 mrconvert 5tt.mif.gz 5tt.nii.gz -force
 while [ ! -e 5tt.nii.gz ]; do sleep 1; done
+
 5tt2gmwmi 5tt.mif.gz 5tt_gmwmi_mask.mif.gz -nthreads $nthreadsX2
 fi
 
