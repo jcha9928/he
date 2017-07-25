@@ -31,7 +31,7 @@ cp \$rawbval ./
 
 #%% 2. DWI processing2-converting nifti to mif%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if [ ! -e mr_fod.mif.gz ];then
-    mrconvert dti.nii.gz -force mr_dwi.mif.gz -fslgrad dti.bvec_tp dti.bval_tp -datatype float32 -stride 0,0,0,1 -nthreads $threadsX2
+    mrconvert dti.nii.gz -force mr_dwi.mif.gz -grad dti.bvec_tp dti.bval_tp -datatype float32 -stride 0,0,0,1 -nthreads $threadsX2
 fi
 
 #%% 3. denoising
@@ -51,7 +51,7 @@ fi
 
 #%% 6. bias field correction
 if [ ! -e mr_dwi_denoised_preproc_biasCorr.mif.gz ]; then
-     dwibiascorrect mr_dwi_denoised_preproc.mif.gz -force mr_dwi_denoised_preproc_biasCorr.mif.gz -ants -mask mr_eroded_mask.mif.gz -fslgrad dti.bvec_tp dti.bval_tp -nthreads $threadsX2
+     dwibiascorrect mr_dwi_denoised_preproc.mif.gz -force mr_dwi_denoised_preproc_biasCorr.mif.gz -ants -mask mr_eroded_mask.mif.gz -grad dti.bvec_tp dti.bval_tp -nthreads $threadsX2
 fi
 
 
