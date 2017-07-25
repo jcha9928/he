@@ -30,7 +30,7 @@ do
 
 
 
-CMD1=$hr/fs/log_mr/cmd.5ttgen.${s}
+CMD1=$logdir/cmd.5ttgen.${s}
 rm -rf $CMD1
 
 echo "#!/bin/bash
