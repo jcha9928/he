@@ -25,9 +25,9 @@ rawdti=$IDP/data/$s/dti.nii.gz
 rawbvec=$IDP/data/$s/dti.bvec_tp
 rawbval=$IDP/data/$s/dti.bval_tp
 
-cp $rawdti ./
-cp $rawbvec ./
-cp $rawbval ./
+cp \$rawdti ./
+cp \$rawbvec ./
+cp \$rawbval ./
 
 %% 2. DWI processing2-converting nifti to mif%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if [ ! -e mr_fod.mif.gz ];then
@@ -64,7 +64,7 @@ fi
 for im in mr_dwi_denoised_preproc_biasCorr mr_eroded_mask mr_meanb0;
 do 
      if [ ! -e ${im}_upsample.mif.gz ];then
-     mrresize ${im}.mif.gz -scale 2.0 -force ${im}_upsample.mif.gz -nthreads $threadsX2
+     mrresize \${im}.mif.gz -scale 2.0 -force \${im}_upsample.mif.gz -nthreads $threadsX2
      fi
 done
 
