@@ -160,8 +160,7 @@ chmod +x $CMD2
 
 done
 
-#$code/fsl_sub_hpc_6 -s smp,12 -j $prepid -l $hr/fs/log_mr $CMD2
 #$code/fsl_sub_hpc_36 $monk/data/cmd/cmd2_${s}  
 #echo $jobid >> $monk/data/cmd/jobid
 
-echo $code/fsl_sub_hpc_6 -N connectome -s smp,$nthreads -j $prepid -l $hr/fs/log_mr -t ${CMD2_batch}
+echo $code/fsl_sub_hpc_6 -N connectome -s smp,$nthreads -j $prepid -l $logdir -t ${CMD2_batch}
