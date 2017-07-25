@@ -14,9 +14,9 @@ while [ $1 != -- ] ; do
     shift
 done
 
-
-CMD1_batch=$hr/fs/log_mr/batch_${nbatch}_5ttgen
-CMD2_batch=$hr/fs/log_mr/batch_${nbatch}_tckgen
+logdir=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job
+CMD1_batch=$logdir/batch${nbatch}_5ttgen
+CMD2_batch=$logdir/batch${nbatch}_tckgen
 
 rm -rf $CMD1_batch
 rm -rf $CMD2_batch
@@ -24,7 +24,7 @@ rm -rf $CMD2_batch
 nthreadsX2=$((${nthreads}*2))
 
 
-subjectlist=/ifs/scratch/pimri/posnerlab/1anal/highrisk/fs/subject_batch${nbatch}
+subjectlist=/ifs/scratch/pimri/posnerlab/1anal/IDP/data/list_dti_batch${nbatch}
 for s in `cat $subjectlist`
 do
 
@@ -37,7 +37,9 @@ echo "#!/bin/bash
 source ~/.bashrc
 FREESURFER_HOME=$work/freesurfer_dev/freesurfer
 source /ifs/scratch/pimri/posnerlab/freesurfer_dev/freesurfer/FreeSurferEnv.sh
-cd /ifs/scratch/pimri/posnerlab/1anal/highrisk/fs/${s}/dmri2
+cd /ifs/scratch/pimri/posnerlab/1anal/IDP/fs/${s}/dmri2
+
+
 ### 5TTGEN
 if [ ! -e 5tt.nii.gz ]; then
 mri_convert ../mri/T1.mgz tmp.nii.gz
@@ -51,8 +53,10 @@ while [ ! -e T1_diff.nii.gz ]; do sleep 1; done
 5ttgen fsl T1_diff.nii.gz 5tt.mif.gz -force -nthreads $nthreadsX2
 mrconvert 5tt.mif.gz 5tt.nii.gz -force
 while [ ! -e 5tt.nii.gz ]; do sleep 1; done
-5tt2gmwmi 5tt.mif.gz 5tt_gmwmi_mask.mif.gz
+5tt2gmwmi 5tt.mif.gz 5tt_gmwmi_mask.mif.gz -nthreads $nthreadsX2
 fi
+
+
 ### APARC+ASEG to diff
 for im in aparc+aseg aparc.a2009s+aseg
 do
@@ -66,6 +70,8 @@ echo ****NOW FLIRTING
 flirt -in \${im}_flip.nii.gz -out \${im}_flip_diff.nii.gz -ref mr_meanb0.nii.gz -applyxfm -init ../dmri/xfms/anat2diff.flt.mat -interp nearestneighbour -v 
 while [ ! -e \${im}_flip_diff.nii.gz ]; do sleep 1; done
 done
+
+
 ### labelconvert for aparc+aseg and aparc.a2009+aseg
 labelconvert aparc+aseg_flip_diff.nii.gz $FREESURFER_HOME/FreeSurferColorLUT.txt /ifs/scratch/pimri/posnerlab/app/mrtrix3/src/connectome/tables/fs_default.txt nodes_aparc+aseg.mif.gz -force
 while [ ! -e nodes_aparc+aseg.mif.gz ]; do sleep 1; done
