@@ -60,7 +60,7 @@ if [ ! -e mr_meanb0.mif.gz ];then
      dwiextract mr_dwi_denoised_preproc_biasCorr.mif.gz - -bzero -nthreads $threadsX2 | mrmath - mean -force mr_meanb0.mif.gz -axis 3 -nthreads $threadsX2
 fi
 
-%% 8. upsampling %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#%% 8. upsampling %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 for im in mr_dwi_denoised_preproc_biasCorr mr_eroded_mask mr_meanb0;
 do 
      if [ ! -e \${im}_upsample.mif.gz ];then
