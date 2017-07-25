@@ -94,12 +94,10 @@ echo "I THINK EVERYTHING IS DONE BY NOW"
 EOC
 
 chmod +x $CMD
+echo $CMD>>$CMD_batch
 done
 
 ### batch submission
-cat<<EOM >$CMD_batch
-$CMD
-EOM
 
 echo $CMD_batch
 echo $code/fsl_sub_hpc_3 -s smp,$threads -l /ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job -t $CMD_batch
