@@ -17,6 +17,7 @@ SUBJECT=${s}_1mm_flair
 
 cat<<EOC >$CMD
 #!/bin/bash
+source ~/.bashrc
 workingdir=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs/${SUBJECT}/dmri2
 echo $workingdir
 if [ ! -e \$workingdir ]; then mkdir \$workingdir; fi
