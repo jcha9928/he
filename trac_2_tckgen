@@ -68,7 +68,7 @@ while [ ! -e T1_flip.nii.gz ]; do sleep 1; done
 mrconvert mr_meanb0.mif.gz mr_meanb0.nii.gz -force
 while [ ! -e mr_meanb0.nii.gz ]; do sleep 1; done
 #flirt -in T1_flip.nii.gz -out T1_diff.nii.gz -ref mr_meanb0.nii.gz -applyxfm -init ../dmri/xfms/anat2diff.flt.mat -v
-WarpImageMultiTransform 3 T1_diff.nii.gz T1_diff_synants.nii.gz -R mr_meanb0.nii.gz str2diff_synantsWarp.nii.gz str2diff*.txt
+WarpImageMultiTransform 3 T1_flip.nii.gz T1_diff_synants.nii.gz -R mr_meanb0.nii.gz str2diff_synantsWarp.nii.gz str2diff*.txt
 
 while [ ! -e T1_diff.nii.gz ]; do sleep 1; done
 5ttgen fsl T1_diff.nii.gz 5tt.mif.gz -force -nthreads $nthreadsX2
