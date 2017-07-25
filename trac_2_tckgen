@@ -38,7 +38,8 @@ source ~/.bashrc
 FREESURFER_HOME=$work/freesurfer_dev/freesurfer
 source /ifs/scratch/pimri/posnerlab/freesurfer_dev/freesurfer/FreeSurferEnv.sh
 ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$nthreadsX2
-cd /ifs/scratch/pimri/posnerlab/1anal/IDP/fs/${s}/dmri2
+SUBJECT=${s}_1mm_flair
+cd /ifs/scratch/pimri/posnerlab/1anal/IDP/fs/\${SUBJECT}/dmri2
 
 ### ATNS warping
 if [ ! -e brain_flip.nii.gz ];then
