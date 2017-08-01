@@ -128,18 +128,18 @@ do
    SUBJECT=${s}_1mm_flair
     cd /ifs/scratch/pimri/posnerlab/1anal/IDP/fs/\${SUBJECT}/dmri2
 #### tckgen
-rm -rf mr_track_100M.tck
+rm -rf mr_track_20M.tck
 if [ -e mr_track_10M_SIFT.tck ]; then
 tracknum=\`tckinfo mr_track_10M_SIFT.tck | grep max_num_tracks | grep -o 10000000\`
   if [ \$tracknum != 10000000 ]; then
-  tckgen WM_FODs.mif.gz /tmp/mr_track_100M.tck -act 5tt.mif.gz -backtrack -crop_at_gmwmi -seed_dynamic WM_FODs.mif.gz -maxlength 250 -minlength 30 -number 100M -force -nthreads $nthreadsX2
-  tcksift -act 5tt.mif.gz /tmp/mr_track_100M.tck WM_FODs.mif.gz mr_track_10M_SIFT.tck -term_number 10M -force -nthreads $nthreadsX2 && echo 'sift done'*******
+  tckgen WM_FODs.mif.gz /tmp/mr_track_20M.tck -act 5tt.mif.gz -backtrack -crop_at_gmwmi -seed_dynamic WM_FODs.mif.gz -maxlength 250 -minlength 30 -number 20M -force -nthreads $nthreadsX2
+  tcksift -act 5tt.mif.gz /tmp/mr_track_20M.tck WM_FODs.mif.gz mr_track_10M_SIFT.tck -term_number 10M -force -nthreads $nthreadsX2 && echo 'sift done'*******
   else 
   echo 'sift done'*******
   fi
 else  
-tckgen WM_FODs.mif.gz /tmp/mr_track_100M.tck -act 5tt.mif.gz -backtrack -crop_at_gmwmi -seed_dynamic WM_FODs.mif.gz -maxlength 250 -minlength 30 -number 100M -force -nthreads $nthreadsX2
-tcksift -act 5tt.mif.gz /tmp/mr_track_100M.tck WM_FODs.mif.gz mr_track_10M_SIFT.tck -term_number 10M -force -nthreads $nthreadsX2 && echo 'sift done'*******
+tckgen WM_FODs.mif.gz /tmp/mr_track_20M.tck -act 5tt.mif.gz -backtrack -crop_at_gmwmi -seed_dynamic WM_FODs.mif.gz -maxlength 250 -minlength 30 -number 20M -force -nthreads $nthreadsX2
+tcksift -act 5tt.mif.gz /tmp/mr_track_20M.tck WM_FODs.mif.gz mr_track_10M_SIFT.tck -term_number 10M -force -nthreads $nthreadsX2 && echo 'sift done'*******
 fi
 #### tck2connectome
 for im in aparc+aseg aparc.a2009s+aseg
