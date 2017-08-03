@@ -23,8 +23,8 @@ SUBJECT=${s}
 cat<<EOC >$CMD
 #!/bin/bash
 source ~/.bashrc
-workingdir=${dir1}/${SUBJECT}/dmri2
-echo $workingdir
+workingdir=${he}/${dir1}/${SUBJECT}/dmri2
+echo \$workingdir
 if [ ! -e \$workingdir ]; then mkdir \$workingdir; fi
 cd \$workingdir
 pwd
