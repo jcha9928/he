@@ -105,7 +105,7 @@ done
 ### batch submission
 
 echo $CMD_batch
-echo $code/fsl_sub_hpc_3 -s smp,$threads -l $jobdir -t $CMD_batch
+$code/fsl_sub_hpc_3 -s smp,$threads -l $jobdir -t $CMD_batch
 
 
 
