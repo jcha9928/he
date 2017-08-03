@@ -1,13 +1,13 @@
 #! /bin/bash
-## usage: trac_2_tckgen -t 6 -b 0
+## usage: trac_2_tckgen -t 6 -data fsd
 
 while [ $1 != -- ] ; do
   case $1 in
     -t)
       nthreads=$2;
       shift;;
-    -b)
-      nbatch=$2;
+    -data)
+      dir1=$2
       shift;;
    esac
     shift
@@ -15,10 +15,8 @@ done
 
 he=/ifs/scratch/pimri/posnerlab/1anal/Hellerstein
 jobdir=${he}/code/he/job
-dir1=fsd
-
-
 logdir=${he}/code/he/job
+
 CMD1_batch=$logdir/batch${nbatch}_5ttgen
 CMD2_batch=$logdir/batch${nbatch}_tckgen
 
