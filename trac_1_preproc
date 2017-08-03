@@ -14,7 +14,7 @@ dir1=fsd
 CMD_batch=$he/code/he/job/cmd1.batch.trac
 rm $CMD_batch
 
-for s in `cat $he/list_dtisubject`
+for s in `cat $he/$dir1/list_dtisubject`
 do
 CMD=$jobdir/cmd1.trac.${s}
 rm $CMD
