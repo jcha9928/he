@@ -1,6 +1,10 @@
 #! /bin/bash
 ## usage: trac_2_tckgen -t 6 -b 0
 
+usage(){
+	echo "Usage: $0 -t 6 -b 0"
+	exit 1
+}
 
 while [ $1 != -- ] ; do
   case $1 in
@@ -14,7 +18,12 @@ while [ $1 != -- ] ; do
     shift
 done
 
-logdir=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job
+he=/ifs/scratch/pimri/posnerlab/1anal/Hellerstein
+jobdir=${he}/code/he/job
+dir1=fsd
+
+
+logdir=${he}/code/he/job
 CMD1_batch=$logdir/batch${nbatch}_5ttgen
 CMD2_batch=$logdir/batch${nbatch}_tckgen
 
@@ -24,7 +33,7 @@ rm -rf $CMD2_batch
 nthreadsX2=$((${nthreads}*2))
 
 
-subjectlist=/ifs/scratch/pimri/posnerlab/1anal/IDP/data/list_dti_batch${nbatch}
+subjectlist=$he/$dir1/list_dtisubject
 for s in `cat $subjectlist`
 do
 
@@ -38,9 +47,9 @@ source ~/.bashrc
 FREESURFER_HOME=$work/freesurfer_dev/freesurfer
 source /ifs/scratch/pimri/posnerlab/freesurfer_dev/freesurfer/FreeSurferEnv.sh
 ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$nthreadsX2
-SUBJECT=${s}_1mm_flair
-cd /ifs/scratch/pimri/posnerlab/1anal/IDP/fs/\${SUBJECT}/dmri2
-
+SUBJECT=${s}
+cd ${he}/${dir1}/${s}/dmri2
+ 
 ### ATNS warping
 if [ ! -e brain_flip.nii.gz ];then
    mri_convert ../mri/brain.mgz /tmp/tmp.nii.gz && /ifs/scratch/pimri/posnerlab/freesurfer_dev/freesurfer/bin/flip4fsl /tmp/tmp.nii.gz brain_flip.nii.gz
@@ -125,8 +134,8 @@ do
    source ~/.bashrc
    ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$nthreadsX2
    echo NOW WARPING FOR SUBJECT ${s}
-   SUBJECT=${s}_1mm_flair
-    cd /ifs/scratch/pimri/posnerlab/1anal/IDP/fs/\${SUBJECT}/dmri2
+   SUBJECT=${s}
+   cd ${he}/${dir1}/${s}/dmri2
 #### tckgen
 rm -rf mr_track_20M.tck
 if [ -e mr_track_10M_SIFT.tck ]; then
