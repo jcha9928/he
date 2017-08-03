@@ -11,7 +11,7 @@ jobdir=${he}/code/he/job
 #select fsd or fdp
 dir1=fsd 
 
-CMD_batch=$he/code/he/job/cmd1.batch.trac.${list}
+CMD_batch=$he/code/he/job/cmd1.batch.trac
 rm $CMD_batch
 
 for s in `cat $he/list_dtisubject`
