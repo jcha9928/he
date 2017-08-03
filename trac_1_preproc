@@ -5,35 +5,38 @@ threads=4
 threadsX2=$((${threads}*2))
 
 IDP=/ifs/scratch/pimri/posnerlab/1anal/IDP
+he=/ifs/scratch/pimri/posnerlab/1anal/Hellerstein
+jobdir=${he}/code/he/job
 
-CMD_batch=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/cmd1.batch.trac.${list}
+#select fsd or fdp
+dir1=fsd 
+
+CMD_batch=$he/code/he/job/cmd1.batch.trac.${list}
 rm $CMD_batch
 
-for s in `cat $IDP/data/$list`
+for s in `cat $he/list_dtisubject`
 do
-CMD=/ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job/cmd1.trac.${s}
+CMD=$jobdir/cmd1.trac.${s}
 rm $CMD
-SUBJECT=${s}_1mm_flair
+SUBJECT=${s}
 
 cat<<EOC >$CMD
 #!/bin/bash
 source ~/.bashrc
-workingdir=/ifs/scratch/pimri/posnerlab/1anal/IDP/fs/${SUBJECT}/dmri2
+workingdir=${dir1}/${SUBJECT}/dmri2
 echo $workingdir
 if [ ! -e \$workingdir ]; then mkdir \$workingdir; fi
 cd \$workingdir
 pwd
 
 #%% 1. setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-cp $IDP/data/$s/dti.nii.gz ./
-cp $IDP/data/$s/dti.bvec_tp ./
-cp $IDP/data/$s/dti.bval_tp ./
-cp $IDP/data/$s/dti.bvec ./
-cp $IDP/data/$s/dti.bval ./
+cp ../dmri/dwi_orig_flip.nii.gz ./
+cp ../dmri/bvals ./
+cp ../dmri/bvecs.norot ./
 
 #%% 2. DWI processing2-converting nifti to mif%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if [ ! -e mr_fod.mif.gz ];then
-    mrconvert dti.nii.gz -force mr_dwi.mif.gz -fslgrad dti.bvec dti.bval -datatype float32 -stride 0,0,0,1 -nthreads $threadsX2
+    mrconvert dwi_orig_flip.nii.gz -force mr_dwi.mif.gz -fslgrad bvecs.norot bvals -datatype float32 -stride 0,0,0,1 -nthreads $threadsX2
 fi
 
 #%% 3. denoising
@@ -45,7 +48,7 @@ fi
 if [ ! -e mr_dwi_denoised_preproc.mif.gz ];then
     dwipreproc PA mr_dwi_denoised.mif.gz -force mr_dwi_denoised_preproc.mif.gz -rpe_none -nthreads $threadsX2
 fi
-
+d
 #%% 5. mask and bias field correction
 if [ ! -e mr_eroded_mask.mif.gz ]; then
      dwi2mask mr_dwi_denoised_preproc.mif.gz - | maskfilter - erode -npass 7 -force mr_eroded_mask.mif.gz -nthreads $threadsX2
@@ -53,7 +56,7 @@ fi
 
 #%% 6. bias field correction
 if [ ! -e mr_dwi_denoised_preproc_biasCorr.mif.gz ]; then
-     dwibiascorrect mr_dwi_denoised_preproc.mif.gz -force mr_dwi_denoised_preproc_biasCorr.mif.gz -ants -mask mr_eroded_mask.mif.gz -fslgrad dti.bvec dti.bval -nthreads $threadsX2
+     dwibiascorrect mr_dwi_denoised_preproc.mif.gz -force mr_dwi_denoised_preproc_biasCorr.mif.gz -ants -mask mr_eroded_mask.mif.gz -fslgrad bvecs.norot bvals -nthreads $threadsX2
 fi
 
 
@@ -102,7 +105,7 @@ done
 ### batch submission
 
 echo $CMD_batch
-echo $code/fsl_sub_hpc_3 -s smp,$threads -l /ifs/scratch/pimri/posnerlab/1anal/IDP/code/idp/job -t $CMD_batch
+echo $code/fsl_sub_hpc_3 -s smp,$threads -l $jobdir -t $CMD_batch
 
 
 
