@@ -17,7 +17,7 @@ he=/ifs/scratch/pimri/posnerlab/1anal/Hellerstein
 jobdir=${he}/code/he/job
 logdir=${he}/code/he/job
 
-CMD1_batch=$logdir/batch${nbatch}_5ttgen
+CMD1_batch=$logdir/batch_metric
 
 rm -rf $CMD1_batch
 
