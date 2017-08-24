@@ -61,5 +61,5 @@ tck2connectome mr_track_10M_SIFT2.tck nodes_aparc.a2009s+aseg.mif* mr_sift_10M_c
 echo $CMD1 >> $CMD1_batch
 done
 
-echo $code/fsl_sub_hpc_3 -s smp,$nthreads -l $logdir -t ${CMD1_batch}
+$code/fsl_sub_hpc_3 -s smp,$nthreads -l $logdir -t ${CMD1_batch}
 echo ${CMD1_batch}
