@@ -21,7 +21,6 @@ CMD1_batch=$logdir/batch${nbatch}_5ttgen
 
 rm -rf $CMD1_batch
 
-nthreadsX2=$((${nthreads}*2))
 
 
 subjectlist=$he/$dir1/list_dtisubject
@@ -35,7 +34,7 @@ echo "#!/bin/bash
 source ~/.bashrc
 FREESURFER_HOME=$work/freesurfer_dev/freesurfer
 source /ifs/scratch/pimri/posnerlab/freesurfer_dev/freesurfer/FreeSurferEnv.sh
-ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$nthreadsX2
+ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$nthreads
 SUBJECT=${s}
 cd ${he}/${dir1}/${s}/dmri2
 
@@ -63,16 +62,4 @@ echo $CMD1 >> $CMD1_batch
 done
 
 echo $code/fsl_sub_hpc_3 -s smp,$nthreads -l $logdir -t ${CMD1_batch}
-echo ${CMD1_batch}
-
-
-############
-" >$CMD1
-
-
-#batch submission
-echo $CMD1 >> $CMD1_batch
-done
-
-$code/fsl_sub_hpc_3 -s smp,$nthreads -l $logdir -t ${CMD1_batch}
 echo ${CMD1_batch}
