@@ -1,0 +1,78 @@
+#! /bin/bash
+## usage: trac_2_tckgen -t 12 -data fsp
+
+while [ $1 != -- ] ; do
+  case $1 in
+    -t)
+      nthreads=$2;
+      shift;;
+    -data)
+      dir1=$2
+      shift;;
+   esac
+    shift
+done
+
+he=/ifs/scratch/pimri/posnerlab/1anal/Hellerstein
+jobdir=${he}/code/he/job
+logdir=${he}/code/he/job
+
+CMD1_batch=$logdir/batch${nbatch}_5ttgen
+
+rm -rf $CMD1_batch
+
+nthreadsX2=$((${nthreads}*2))
+
+
+subjectlist=$he/$dir1/list_dtisubject
+for s in `cat $subjectlist`
+do
+
+CMD1=$logdir/cmd.metric.${s}
+rm -rf $CMD1
+
+echo "#!/bin/bash
+source ~/.bashrc
+FREESURFER_HOME=$work/freesurfer_dev/freesurfer
+source /ifs/scratch/pimri/posnerlab/freesurfer_dev/freesurfer/FreeSurferEnv.sh
+ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=$nthreadsX2
+SUBJECT=${s}
+cd ${he}/${dir1}/${s}/dmri2
+
+dwi2tensor mr_dwi_denoised_preproc_biasCorr.mif.gz - | tensor2metric -mask mr_dilate_mask.mif.gz - -fa dti_fa.mif.gz -force
+dwi2tensor mr_dwi_denoised_preproc_biasCorr.mif.gz - | tensor2metric -mask mr_dilate_mask.mif.gz - -adc dti_adc.mif.gz -force
+dwi2tensor mr_dwi_denoised_preproc_biasCorr.mif.gz - | tensor2metric -mask mr_dilate_mask.mif.gz - -ad dti_ad.mif.gz -force
+dwi2tensor mr_dwi_denoised_preproc_biasCorr.mif.gz - | tensor2metric -mask mr_dilate_mask.mif.gz - -rd dti_rd.mif.gz -force
+tcksample mr_track_10M_SIFT2.tck dti_fa.mif.gz mr_track_10M_SIFT2_mean_fa.csv -stat_tck mean -force
+tcksample mr_track_10M_SIFT2.tck dti_adc.mif.gz mr_track_10M_SIFT2_mean_adc.csv -stat_tck mean -force 
+tcksample mr_track_10M_SIFT2.tck dti_ad.mif.gz mr_track_10M_SIFT2_mean_ad.csv -stat_tck mean -force
+tcksample mr_track_10M_SIFT2.tck dti_rd.mif.gz mr_track_10M_SIFT2_mean_rd.csv -stat_tck mean -force 
+tck2connectome mr_track_10M_SIFT2.tck nodes_aparc+aseg.mif* mr_sift_10M_connectome_aparc+aseg_fa.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_fa.csv -stat_edge mean
+tck2connectome mr_track_10M_SIFT2.tck nodes_aparc+aseg.mif* mr_sift_10M_connectome_aparc+aseg_adc.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_adc.csv -stat_edge mean
+tck2connectome mr_track_10M_SIFT2.tck nodes_aparc+aseg.mif* mr_sift_10M_connectome_aparc+aseg_ad.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_ad.csv -stat_edge mean
+tck2connectome mr_track_10M_SIFT2.tck nodes_aparc+aseg.mif* mr_sift_10M_connectome_aparc+aseg_rd.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_rd.csv -stat_edge mean
+tck2connectome mr_track_10M_SIFT2.tck nodes_aparc.a2009s+aseg.mif* mr_sift_10M_connectome_aparc.a2009s+aseg_fa.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_fa.csv -stat_edge mean
+tck2connectome mr_track_10M_SIFT2.tck nodes_aparc.a2009s+aseg.mif* mr_sift_10M_connectome_aparc.a2009s+aseg_adc.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_adc.csv -stat_edge mean
+tck2connectome mr_track_10M_SIFT2.tck nodes_aparc.a2009s+aseg.mif* mr_sift_10M_connectome_aparc.a2009s+aseg_ad.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_ad.csv -stat_edge mean
+tck2connectome mr_track_10M_SIFT2.tck nodes_aparc.a2009s+aseg.mif* mr_sift_10M_connectome_aparc.a2009s+aseg_rd.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_rd.csv -stat_edge mean
+" >$CMD1
+
+
+#batch submission
+echo $CMD1 >> $CMD1_batch
+done
+
+echo $code/fsl_sub_hpc_3 -s smp,$nthreads -l $logdir -t ${CMD1_batch}
+echo ${CMD1_batch}
+
+
+############
+" >$CMD1
+
+
+#batch submission
+echo $CMD1 >> $CMD1_batch
+done
+
+$code/fsl_sub_hpc_3 -s smp,$nthreads -l $logdir -t ${CMD1_batch}
+echo ${CMD1_batch}
