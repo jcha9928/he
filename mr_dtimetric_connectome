@@ -42,18 +42,18 @@ dwi2tensor mr_dwi_denoised_preproc_biasCorr.mif.gz - | tensor2metric -mask mr_di
 dwi2tensor mr_dwi_denoised_preproc_biasCorr.mif.gz - | tensor2metric -mask mr_dilate_mask.mif.gz - -adc dti_adc.mif.gz -force
 dwi2tensor mr_dwi_denoised_preproc_biasCorr.mif.gz - | tensor2metric -mask mr_dilate_mask.mif.gz - -ad dti_ad.mif.gz -force
 dwi2tensor mr_dwi_denoised_preproc_biasCorr.mif.gz - | tensor2metric -mask mr_dilate_mask.mif.gz - -rd dti_rd.mif.gz -force
-tcksample mr_track_10M_SIFT2.tck dti_fa.mif.gz mr_track_10M_SIFT2_mean_fa.csv -stat_tck mean -force
-tcksample mr_track_10M_SIFT2.tck dti_adc.mif.gz mr_track_10M_SIFT2_mean_adc.csv -stat_tck mean -force 
-tcksample mr_track_10M_SIFT2.tck dti_ad.mif.gz mr_track_10M_SIFT2_mean_ad.csv -stat_tck mean -force
-tcksample mr_track_10M_SIFT2.tck dti_rd.mif.gz mr_track_10M_SIFT2_mean_rd.csv -stat_tck mean -force 
-tck2connectome mr_track_10M_SIFT2.tck nodes_aparc+aseg.mif* mr_sift_10M_connectome_aparc+aseg_fa.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_fa.csv -stat_edge mean
-tck2connectome mr_track_10M_SIFT2.tck nodes_aparc+aseg.mif* mr_sift_10M_connectome_aparc+aseg_adc.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_adc.csv -stat_edge mean
-tck2connectome mr_track_10M_SIFT2.tck nodes_aparc+aseg.mif* mr_sift_10M_connectome_aparc+aseg_ad.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_ad.csv -stat_edge mean
-tck2connectome mr_track_10M_SIFT2.tck nodes_aparc+aseg.mif* mr_sift_10M_connectome_aparc+aseg_rd.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_rd.csv -stat_edge mean
-tck2connectome mr_track_10M_SIFT2.tck nodes_aparc.a2009s+aseg.mif* mr_sift_10M_connectome_aparc.a2009s+aseg_fa.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_fa.csv -stat_edge mean
-tck2connectome mr_track_10M_SIFT2.tck nodes_aparc.a2009s+aseg.mif* mr_sift_10M_connectome_aparc.a2009s+aseg_adc.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_adc.csv -stat_edge mean
-tck2connectome mr_track_10M_SIFT2.tck nodes_aparc.a2009s+aseg.mif* mr_sift_10M_connectome_aparc.a2009s+aseg_ad.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_ad.csv -stat_edge mean
-tck2connectome mr_track_10M_SIFT2.tck nodes_aparc.a2009s+aseg.mif* mr_sift_10M_connectome_aparc.a2009s+aseg_rd.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_rd.csv -stat_edge mean
+tcksample mr_track_10M_SIFT.tck dti_fa.mif.gz mr_track_10M_SIFT2_mean_fa.csv -stat_tck mean -force
+tcksample mr_track_10M_SIFT.tck dti_adc.mif.gz mr_track_10M_SIFT2_mean_adc.csv -stat_tck mean -force 
+tcksample mr_track_10M_SIFT.tck dti_ad.mif.gz mr_track_10M_SIFT2_mean_ad.csv -stat_tck mean -force
+tcksample mr_track_10M_SIFT.tck dti_rd.mif.gz mr_track_10M_SIFT2_mean_rd.csv -stat_tck mean -force 
+tck2connectome mr_track_10M_SIFT.tck nodes_aparc+aseg.mif* mr_sift_10M_connectome_aparc+aseg_fa.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_fa.csv -stat_edge mean
+tck2connectome mr_track_10M_SIFT.tck nodes_aparc+aseg.mif* mr_sift_10M_connectome_aparc+aseg_adc.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_adc.csv -stat_edge mean
+tck2connectome mr_track_10M_SIFT.tck nodes_aparc+aseg.mif* mr_sift_10M_connectome_aparc+aseg_ad.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_ad.csv -stat_edge mean
+tck2connectome mr_track_10M_SIFT.tck nodes_aparc+aseg.mif* mr_sift_10M_connectome_aparc+aseg_rd.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_rd.csv -stat_edge mean
+tck2connectome mr_track_10M_SIFT.tck nodes_aparc.a2009s+aseg.mif* mr_sift_10M_connectome_aparc.a2009s+aseg_fa.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_fa.csv -stat_edge mean
+tck2connectome mr_track_10M_SIFT.tck nodes_aparc.a2009s+aseg.mif* mr_sift_10M_connectome_aparc.a2009s+aseg_adc.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_adc.csv -stat_edge mean
+tck2connectome mr_track_10M_SIFT.tck nodes_aparc.a2009s+aseg.mif* mr_sift_10M_connectome_aparc.a2009s+aseg_ad.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_ad.csv -stat_edge mean
+tck2connectome mr_track_10M_SIFT.tck nodes_aparc.a2009s+aseg.mif* mr_sift_10M_connectome_aparc.a2009s+aseg_rd.csv -zero_diagonal -scale_file mr_track_10M_SIFT2_mean_rd.csv -stat_edge mean
 " >$CMD1
 
 
