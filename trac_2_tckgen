@@ -157,4 +157,4 @@ done
 #$code/fsl_sub_hpc_36 $monk/data/cmd/cmd2_${s}  
 #echo $jobid >> $monk/data/cmd/jobid
 
-$code/fsl_sub_hpc_3 -N connectome -s smp,$nthreads -j $prepid -l $logdir -t ${CMD2_batch}
+echo $code/fsl_sub_hpc_3 -N connectome -s smp,$nthreads -j $prepid -l $logdir -t ${CMD2_batch}
