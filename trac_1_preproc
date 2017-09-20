@@ -2,7 +2,7 @@
 #usage: trac_1_preproc 1
 
 list=$1
-threads=6
+threads=12
 threadsX2=`echo $threads`
 
 IDP=/ifs/scratch/pimri/posnerlab/1anal/IDP
