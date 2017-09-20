@@ -45,7 +45,7 @@ if [ ! -e mr_dwi.mif.gz ];then
 fi
 
 #%% 3. denoising
-if [ ! -e mmr_dwi_denoised.mif.gz ];then
+if [ ! -e mr_dwi_denoised.mif.gz ];then
     echo '*********denoising'
     dwidenoise mr_dwi.mif.gz -force mr_dwi_denoised.mif.gz -nthreads $threadsX2
 fi
@@ -131,7 +131,7 @@ done
 ### batch submission
 
 echo $CMD_batch
-#$code/fsl_sub_hpc_3 -s smp,$threads -l $jobdir -t $CMD_batch
+$code/fsl_sub_hpc_1 -s smp,$threads -l $jobdir -t $CMD_batch
 
 
 
