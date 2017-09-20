@@ -39,27 +39,32 @@ cp ../dmri/bvals ./
 cp ../dmri/bvecs.norot ./
 
 #%% 2. DWI processing2-converting nifti to mif%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if [ ! -e mr_fod.mif.gz ];then
+if [ ! -e mr_dwi.mif.gz ];then
+   echo 'converting to mif'
     mrconvert dwi_orig_flip.nii.gz -force mr_dwi.mif.gz -fslgrad bvecs.norot bvals -datatype float32 -stride 0,0,0,1 -nthreads $threadsX2
 fi
 
 #%% 3. denoising
 if [ ! -e mmr_dwi_denoised.mif.gz ];then
+    echo 'denoising'
     dwidenoise mr_dwi.mif.gz -force mr_dwi_denoised.mif.gz -nthreads $threadsX2
 fi
 
 #%% 4. dwipreproc -eddy current
 if [ ! -e mr_dwi_denoised_preproc.mif.gz ];then
+    ecoh 'dwipreproc'
     dwipreproc PA mr_dwi_denoised.mif.gz -force mr_dwi_denoised_preproc.mif.gz -rpe_none -nthreads $threadsX2
 fi
-d
+
 #%% 5. mask and bias field correction
 if [ ! -e mr_eroded_mask.mif.gz ]; then
+     echo 'masking'
      dwi2mask mr_dwi_denoised_preproc.mif.gz - | maskfilter - erode -npass 7 -force mr_eroded_mask.mif.gz -nthreads $threadsX2
 fi
 
 #%% 6. bias field correction
 if [ ! -e mr_dwi_denoised_preproc_biasCorr.mif.gz ]; then
+     echo 'bias correction'
      dwibiascorrect mr_dwi_denoised_preproc.mif.gz -force mr_dwi_denoised_preproc_biasCorr.mif.gz -ants -mask mr_eroded_mask.mif.gz -fslgrad bvecs.norot bvals -nthreads $threadsX2
 fi
 
