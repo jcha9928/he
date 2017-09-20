@@ -40,42 +40,44 @@ cp ../dmri/bvecs.norot ./
 
 #%% 2. DWI processing2-converting nifti to mif%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if [ ! -e mr_dwi.mif.gz ];then
-   echo 'converting to mif'
+   echo '*********converting to mif'
     mrconvert dwi_orig_flip.nii.gz -force mr_dwi.mif.gz -fslgrad bvecs.norot bvals -datatype float32 -stride 0,0,0,1 -nthreads $threadsX2
 fi
 
 #%% 3. denoising
 if [ ! -e mmr_dwi_denoised.mif.gz ];then
-    echo 'denoising'
+    echo '*********denoising'
     dwidenoise mr_dwi.mif.gz -force mr_dwi_denoised.mif.gz -nthreads $threadsX2
 fi
 
 #%% 4. dwipreproc -eddy current
 if [ ! -e mr_dwi_denoised_preproc.mif.gz ];then
-    ecoh 'dwipreproc'
+    ecoh '*********dwipreproc'
     dwipreproc PA mr_dwi_denoised.mif.gz -force mr_dwi_denoised_preproc.mif.gz -rpe_none -nthreads $threadsX2
 fi
 
 #%% 5. mask and bias field correction
 if [ ! -e mr_eroded_mask.mif.gz ]; then
-     echo 'masking'
+     echo '*********masking'
      dwi2mask mr_dwi_denoised_preproc.mif.gz - | maskfilter - erode -npass 7 -force mr_eroded_mask.mif.gz -nthreads $threadsX2
 fi
 
 #%% 6. bias field correction
 if [ ! -e mr_dwi_denoised_preproc_biasCorr.mif.gz ]; then
-     echo 'bias correction'
+     echo '*********bias correction'
      dwibiascorrect mr_dwi_denoised_preproc.mif.gz -force mr_dwi_denoised_preproc_biasCorr.mif.gz -ants -mask mr_eroded_mask.mif.gz -fslgrad bvecs.norot bvals -nthreads $threadsX2
 fi
 
 
 #%% 7. generating b0 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if [ ! -e mr_meanb0.mif.gz ];then
+   echo '*********mean b0 image'
      dwiextract mr_dwi_denoised_preproc_biasCorr.mif.gz - -bzero -nthreads $threadsX2 | mrmath - mean -force mr_meanb0.mif.gz -axis 3 -nthreads $threadsX2
 fi
 
 #%% 7-1. generating brain mask using b0 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if [ ! -e mr_meanb0_brain_mask.nii.gz ];then
+   echo '*********mean b0 mask'
      mrconvert mr_meanb0.mif.gz mr_meanb0.nii.gz -nthreads $threadsX2
      bet2 mr_meanb0.nii.gz mr_meanb0_brain -m 
      #dwiextract mr_dwi_denoised_preproc_biasCorr.mif.gz - -bzero -nthreads $threadsX2 | mrmath - mean -force mr_meanb0.mif.gz -axis 3 -nthreads $threadsX2
@@ -86,6 +88,7 @@ fi
 for im in mr_dwi_denoised_preproc_biasCorr mr_eroded_mask mr_meanb0;
 do 
      if [ ! -e \${im}_upsample.mif.gz ];then
+     echo '*********upsampling'
      mrresize \${im}.mif.gz -scale 2.0 -force \${im}_upsample.mif.gz -nthreads $threadsX2
      fi
 done
@@ -94,6 +97,7 @@ done
 #%% 9. dwi2response-subject level %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #if [ ! -e response_wm.txt ]; then
       #### using non-eroded mask####
+    echo '*********dwi2response'
     dwi2response dhollander -mask mr_meanb0_brain_mask.nii.gz -voxels mr_voxels_eroded.mif.gz mr_dwi_denoised_preproc_biasCorr.mif.gz response_wm.txt response_gm.txt response_csf.txt -force -nthreads $threadsX2
 #fi
 
@@ -102,14 +106,17 @@ done
 #% make sure to use "DILATED MASK" for FOD generation
 if [ ! -e mr_dilate_mask2.mif.gz ];then
     #dwi2mask mr_dwi_denoised_preproc_biasCorr.mif.gz - | maskfilter - dilate -npass 5 -force mr_dilate_mask.mif.gz -nthreads $threadsX2
+    echo '*********dilated mask'
     maskfilter mr_meanb0_brain.nii.gz dilate -npass 5 -force mr_dilate_mask2.mif.gz -nthreads $threadsX2
 fi
 
 #if [ ! -e WM_FODs.mif.gz ];then
+   echo '*********dwi2fod msmt'
    dwi2fod msmt_csd mr_dwi_denoised_preproc_biasCorr.mif.gz response_wm.txt WM_FODs.mif.gz response_gm.txt gm.mif.gz response_csf.txt csf.mif.gz -mask mr_dilate_mask2.mif.gz -force -nthreads $threadsX2
 #fi
 
 #if [ ! -e tissueRGB.mif.gz ]; then
+   echo '*********tissue RGB'
    mrconvert WM_FODs.mif.gz - -coord 3 0 | mrcat csf.mif.gz gm.mif.gz - tissueRGB.mif.gz -axis 3 -force
 #fi
 
