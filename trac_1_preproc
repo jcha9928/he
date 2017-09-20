@@ -3,7 +3,7 @@
 
 list=$1
 threads=6
-threadsX2=threads
+threadsX2=`echo $threads`
 
 IDP=/ifs/scratch/pimri/posnerlab/1anal/IDP
 he=/ifs/scratch/pimri/posnerlab/1anal/Hellerstein
