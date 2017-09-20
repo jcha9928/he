@@ -2,7 +2,7 @@
 #usage: trac_1_preproc 1
 
 list=$1
-threads=12
+threads=6
 threadsX2=threads
 
 IDP=/ifs/scratch/pimri/posnerlab/1anal/IDP
@@ -119,7 +119,7 @@ done
 ### batch submission
 
 echo $CMD_batch
-$code/fsl_sub_hpc_3 -s smp,$threads -l $jobdir -t $CMD_batch
+#$code/fsl_sub_hpc_3 -s smp,$threads -l $jobdir -t $CMD_batch
 
 
 
