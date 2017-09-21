@@ -24,7 +24,7 @@ rm -rf $CMD1_batch
 rm -rf $CMD2_batch
 
 #nthreadsX2=$((${nthreads}*2))
-nthreadsX2=`cat $nthreads`
+nthreadsX2=`echo $nthreads`
 
 subjectlist=$he/$dir1/list_dtisubject
 for s in `cat $subjectlist`
