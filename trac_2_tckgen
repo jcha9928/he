@@ -121,7 +121,7 @@ do
 
 
 #### tckgen
-rm -rf mr_track_20M.tck
+#rm -rf mr_track_10M_SIFT.tck
 if [ -e mr_track_10M_SIFT2.tck ]; then
 tracknum=\`tckinfo mr_track_10M_SIFT2.tck | grep max_num_tracks | grep -o 10000000\`
   if [ \$tracknum != 10000000 ]; then
